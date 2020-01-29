@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="WebUI Test Suite" parallel="tests" thread-count="1">
+    <!-- 配置文件 -->
+    <parameter name="propertiesPath" value="src/test/resources/config/config.properties"/>
+
+    <!-- 外部传参 -->
+    <parameter name="param1" value="${param1}"/>
+    <parameter name="param2" value="${param2}"/>
+
+    <!-- hub 参数配置 -->
+    <!--<parameter name="remoteIP" value="127.0.0.1"/>-->
+    <!--<parameter name="remotePort" value="4444"/>-->
+    <!--<parameter name="browserVersion" value="79.0.3945.130"/>-->
+
+    <!-- 项目传参 -->
+    <!-- 终端选择 pc 端 -->
+    <parameter name="terminal" value="pc"/>
+    <parameter name="browserName" value="chrome"/>
+
+    <!--&lt;!&ndash; 终端选择 h5 端 &ndash;&gt;-->
+    <!--<parameter name="terminal" value="h5"/>-->
+    <!--<parameter name="browserName" value="chrome"/>-->
+    <!--<parameter name="deviceName" value="Nexus 5"/>-->
+
+    <!-- 测试套件 -->
+    <suite-files>
+        <!-- Li Ming -->
+        <suite-file path="liming_testng.xml"/>
+        <!-- Zhang Hua -->
+        <suite-file path="zhanghua_testng.xml"/>
+    </suite-files>
+
+    <!-- 监听器 -->
+    <listeners>
+        <!-- 优先级监听器 -->
+        <listener class-name="com.abcnull.listener.RePrioritizingListener"/>
+        <!-- 测试日志监听器 -->
+        <listener class-name="com.abcnull.listener.TestLogListener"/>
+        <!-- BeautifulReport 测试报告监听器 -->
+        <listener class-name="com.abcnull.listener.TestReportListener"/>
+        <!-- 定制化测试报告监听器 -->
+        <listener class-name="com.abcnull.listener.ExtentTestReporterListener"/>
+    </listeners>
+</suite>

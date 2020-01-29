@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <!-- 配置参数日志目录前缀 -->
+        <Property name="LOG_HOME">logs</Property>
+        <!-- 配置日志输出格式 %t:线程名;%C:类名;%M:方法名;%m:错误信息;%n:换行 -->
+        <property name="PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t-%L] %-5level %C.%M - %m%n</property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) -->
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${PATTERN}"/>
+        </Console>
+        <!-- 这个会打印出所有的info及以下级别的信息，每次大小超过size，
+        则这size大小的日志会自动存入按年份-月份建立的文件夹下面，作为存档。清空demo.log,将最新的log输出到demo.log中，以此循环 -->
+        <RollingFile name="RollingFile" fileName="${LOG_HOME}/demo.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/%d{yyyy-MM-dd}-demo-%i.log">
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${PATTERN}" charset="UTF-8"/>
+            <Policies>
+                <!-- 基于时间的滚动策略，interval属性用来指定多久滚动一次，默认是1 hour。 modulate=true用来调整时间：比如现在是早上3am，interval是4，那么第一次滚动是在4am，接着是8am，12am...而不是7am. -->
+                <!-- 关键点在于 filePattern后的日期格式，以及TimeBasedTriggeringPolicy的interval，
+                日期格式精确到哪一位，interval也精确到哪一个单位 -->
+                <!-- log4j2的按天分日志文件 : %d{yyyy-MM-dd}-%i.log-->
+                <!-- log4j2的按小时分日志文件 : %d{yyyy-MM-dd HH}-%i.log-->
+                <!-- log4j2的按分钟分日志文件 : %d{yyyy-MM-dd HH:mm}-%i.log-->
+                <!-- log4j2的按秒分日志文件 : %d{yyyy-MM-dd HH:mm:ss}-%i.log-->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!-- SizeBasedTriggeringPolicy:Policies子节点， 基于指定文件大小的滚动策略，size属性用来定义每个日志文件的大小. -->
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <!--设置生成的最多文件数-->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!--指定日志输出的最低级别以及输出到哪些Appender-->
+        <root level="debug">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFile"/>
+        </root>
+    </Loggers>
+</Configuration>
