@@ -85,11 +85,6 @@
             <artifactId>selenium-java</artifactId>
             <version>${selenium-version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-api</artifactId>
-            <version>${selenium-version}</version>
-        </dependency>
         <!-- htmlunit -->
         <!-- 一个页面分析工具，提供了界面上各种操作的 API -->
         <dependency>
