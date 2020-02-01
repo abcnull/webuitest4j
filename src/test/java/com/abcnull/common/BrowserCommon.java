@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import redis.clients.jedis.Jedis;
@@ -26,6 +27,16 @@ public class BrowserCommon {
      * 驱动
      */
     protected WebDriver driver;
+
+    /**
+     * 动作
+     */
+    protected Actions actions;
+
+    /**
+     * 脚本
+     */
+    protected JavascriptExecutor je;
 
     /**
      * 显示等待
@@ -49,6 +60,8 @@ public class BrowserCommon {
      */
     public BrowserCommon(WebDriver driver) {
         this.driver = driver;
+        this.actions = new Actions(driver);
+        this.je = ((JavascriptExecutor) driver);
         // 显示等待时长
         long timeout = Long.valueOf(PropertiesReader.getKey("driver.timeouts.webDriverWait"));
         wait = new WebDriverWait(driver, timeout);
@@ -62,6 +75,8 @@ public class BrowserCommon {
      */
     public BrowserCommon(WebDriver driver, Jedis jedis) {
         this.driver = driver;
+        this.actions = new Actions(driver);
+        this.je = ((JavascriptExecutor) driver);
         // 显示等待时长
         long timeout = Long.valueOf(PropertiesReader.getKey("driver.timeouts.webDriverWait"));
         wait = new WebDriverWait(driver, timeout);
@@ -76,6 +91,8 @@ public class BrowserCommon {
      */
     public BrowserCommon(WebDriver driver, RedisUtil redisUtil) {
         this.driver = driver;
+        this.actions = new Actions(driver);
+        this.je = ((JavascriptExecutor) driver);
         // 显示等待时长
         long timeout = Long.valueOf(PropertiesReader.getKey("driver.timeouts.webDriverWait"));
         wait = new WebDriverWait(driver, timeout);
@@ -120,6 +137,16 @@ public class BrowserCommon {
         inputElement.clear();
         inputElement.sendKeys(content);
         return inputElement;
+    }
+
+    /**
+     * 移动到指定元素
+     *
+     * @param locator 元素定位
+     * @return 动作
+     */
+    public Actions moveToElement(By locator) {
+        return actions.moveToElement(locateElement(locator));
     }
 
     /**
@@ -204,17 +231,17 @@ public class BrowserCommon {
      * @param script JS 脚本
      */
     public void executeScript(String script) {
-        ((JavascriptExecutor) driver).executeScript(script);
+        je.executeScript(script);
     }
 
     /**
      * 执行 JS 脚本
      *
      * @param script JS 脚本
-     * @param args 对象元素数组
+     * @param args   对象元素数组
      */
     public void executeScript(String script, Object... args) {
-        ((JavascriptExecutor) driver).executeScript(script, args);
+        je.executeScript(script, args);
     }
 
     /**
