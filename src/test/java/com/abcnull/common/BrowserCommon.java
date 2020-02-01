@@ -168,6 +168,33 @@ public class BrowserCommon {
         return driver.switchTo().window(allHandlesList.get(num - 1));
     }
 
+    /**
+     * 切换 frame 结构
+     *
+     * @param locator frame 定位
+     * @return 驱动
+     */
+    public WebDriver switchFrame(By locator) {
+        return driver.switchTo().frame(locateElement(locator));
+    }
+
+    /**
+     * 切换父 frame 结构
+     *
+     * @return 驱动
+     */
+    public WebDriver switchParentFrame() {
+        return driver.switchTo().parentFrame();
+    }
+
+    /**
+     * 跳出 frame 结构
+     *
+     * @return 驱动
+     */
+    public WebDriver switchOutOfFrame() {
+        return driver.switchTo().defaultContent();
+    }
 
     /*============================== JS 操作 ==============================*/
 
