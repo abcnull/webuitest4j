@@ -52,8 +52,8 @@ public class BaiduPage extends PageCommon {
          * redisUtil 存取键值对设置了键值过期时限，这个时限在 properties 文件中已配置
          * 若想自己设置时限可以直接使用 jedis 而不使用 redisUtil，如下所示：
          */
-        redisUtil.setKey("a", "1");
-        System.out.println("redis 中的值为：" + redisUtil.getKey("a"));
+//        redisUtil.setKey("a", "1");
+//        System.out.println("redis 中的值为：" + redisUtil.getKey("a"));
 
         /*
         jedis.set("a", "1");
