@@ -199,17 +199,36 @@ public class BrowserCommon {
     /*============================== JS 操作 ==============================*/
 
     /**
+     * 执行 JS 脚本
+     *
+     * @param script JS 脚本
+     */
+    public void executeScript(String script) {
+        ((JavascriptExecutor) driver).executeScript(script);
+    }
+
+    /**
+     * 执行 JS 脚本
+     *
+     * @param script JS 脚本
+     * @param args 对象元素数组
+     */
+    public void executeScript(String script, Object... args) {
+        ((JavascriptExecutor) driver).executeScript(script, args);
+    }
+
+    /**
      * 页面滑动到最顶上
      */
     public void scrollToTop() {
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
+        executeScript("window.scrollTo(0, 0)");
     }
 
     /**
      * 页面滑动到最低端
      */
     public void scrollToBottom() {
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        executeScript("window.scrollTo(0, document.body.scrollHeight)");
     }
 
     /**
@@ -218,7 +237,7 @@ public class BrowserCommon {
      * @param by 需要和页面顶端对齐的元素
      */
     public void scrollElementTopToTop(By by) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(by));
+        executeScript("arguments[0].scrollIntoView(true);", driver.findElement(by));
     }
 
     /**
@@ -227,7 +246,7 @@ public class BrowserCommon {
      * @param by 需要和页面底端对齐的元素
      */
     public void scrollElementBottomToBottom(By by) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);", driver.findElement(by));
+        executeScript("arguments[0].scrollIntoView(false);", driver.findElement(by));
     }
 
     /*============================== 页面断言 ==============================*/
