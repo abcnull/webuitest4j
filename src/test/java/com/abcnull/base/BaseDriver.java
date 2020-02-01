@@ -2,6 +2,7 @@ package com.abcnull.base;
 
 import com.abcnull.util.PropertiesReader;
 import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -432,6 +433,8 @@ public class BaseDriver {
      * 驱动结束并关闭浏览器
      */
     public void closeBrowser() {
+        // JS 显示弹出框表示测试结束
+        ((JavascriptExecutor) driver).executeScript("alert('测试完成，浏览器在3s后关闭！)");
         if (driver != null) {
             driver.quit();
         }
