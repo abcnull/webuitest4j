@@ -1,5 +1,6 @@
 package com.abcnull.base;
 
+import com.abcnull.constant.TestConstant;
 import com.abcnull.util.PropertiesReader;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.JavascriptExecutor;
@@ -432,9 +433,10 @@ public class BaseDriver {
     /**
      * 驱动结束并关闭浏览器
      */
-    public void closeBrowser() {
+    public void closeBrowser() throws InterruptedException {
         // JS 显示弹出框表示测试结束
         ((JavascriptExecutor) driver).executeScript("alert('测试完成，浏览器在3s后关闭！')");
+        Thread.sleep(TestConstant.THREE_THOUSANG);
         if (driver != null) {
             driver.quit();
         }

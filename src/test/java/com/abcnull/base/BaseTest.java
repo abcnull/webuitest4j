@@ -116,7 +116,7 @@ public class BaseTest {
      * 执行一个测试用例之后执行
      */
     @AfterTest(alwaysRun = true)
-    public void afterTest() {
+    public void afterTest() throws InterruptedException {
         // 驱动退出关闭浏览器
         baseDriver.closeBrowser();
         // redis 连接回收
