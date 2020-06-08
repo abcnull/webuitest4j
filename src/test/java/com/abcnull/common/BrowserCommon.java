@@ -150,6 +150,18 @@ public class BrowserCommon {
     }
 
     /**
+     * 拖拽指定元素
+     *
+     * @param fromLocator   从...元素
+     * @param toLocator     至...元素
+     */
+    public void dragAndDropElement(By fromLocator, By toLocator) {
+        wait.until(ExpectedConditions.elementToBeClickable(fromLocator));
+        actions.dragAndDrop(locateElement(fromLocator), locateElement(toLocator));
+        actions.perform();
+    }
+
+    /**
      * 跳转页面
      *
      * @param url 网址
@@ -196,7 +208,7 @@ public class BrowserCommon {
     }
 
     /**
-     * 切换 frame 结构
+     * 根据元素位置切换 frame 结构
      *
      * @param locator frame 定位
      * @return 驱动
