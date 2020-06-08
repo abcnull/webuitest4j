@@ -143,10 +143,10 @@ public class BrowserCommon {
      * 移动到指定元素
      *
      * @param locator 元素定位
-     * @return 动作
      */
-    public Actions moveToElement(By locator) {
-        return actions.moveToElement(locateElement(locator));
+    public void moveToElement(By locator) {
+        actions.moveToElement(locateElement(locator));
+        actions.perform();
     }
 
     /**
