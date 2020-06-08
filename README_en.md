@@ -1,6 +1,6 @@
 [TOC]
 
-**[中文](https://github.com/abcnull/webuitest4j) | [Blog](https://blog.csdn.net/abcnull/article/details/104119940)**
+**[中文](https://github.com/abcnull/webuitest4j) | [Blog](https://blog.csdn.net/abcnull/article/details/106433145)**
 
 # Brief Intro
 
