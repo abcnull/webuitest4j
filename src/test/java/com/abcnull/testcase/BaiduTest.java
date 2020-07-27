@@ -1,7 +1,7 @@
 package com.abcnull.testcase;
 
-import com.abcnull.base.BaseTest;
-import com.abcnull.page.BaiduPage;
+import com.abcnull.basetest.BaseTest;
+import com.abcnull.pageobject.page.BaiduPage;
 import org.testng.annotations.Test;
 
 /**

@@ -1,4 +1,4 @@
-package com.abcnull.common;
+package com.abcnull.basepage;
 
 import com.abcnull.util.PropertiesReader;
 import com.abcnull.util.RedisUtil;
@@ -22,7 +22,7 @@ import java.util.Set;
  * @version 1.0.0
  * @date 2020/1/28
  */
-public class BrowserCommon {
+public class BaseBrowser {
     /**
      * 驱动
      */
@@ -58,7 +58,7 @@ public class BrowserCommon {
      *
      * @param driver 驱动
      */
-    public BrowserCommon(WebDriver driver) {
+    public BaseBrowser(WebDriver driver) {
         this.driver = driver;
         this.actions = new Actions(driver);
         this.je = ((JavascriptExecutor) driver);
@@ -73,7 +73,7 @@ public class BrowserCommon {
      * @param driver 驱动
      * @param jedis  Jedis 连接
      */
-    public BrowserCommon(WebDriver driver, Jedis jedis) {
+    public BaseBrowser(WebDriver driver, Jedis jedis) {
         this.driver = driver;
         this.actions = new Actions(driver);
         this.je = ((JavascriptExecutor) driver);
@@ -89,7 +89,7 @@ public class BrowserCommon {
      * @param driver    驱动
      * @param redisUtil redis 连接工具类
      */
-    public BrowserCommon(WebDriver driver, RedisUtil redisUtil) {
+    public BaseBrowser(WebDriver driver, RedisUtil redisUtil) {
         this.driver = driver;
         this.actions = new Actions(driver);
         this.je = ((JavascriptExecutor) driver);

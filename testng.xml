@@ -17,7 +17,6 @@
     <!-- 终端选择 pc 端 -->
     <parameter name="terminal" value="pc"/>
     <parameter name="browserName" value="chrome"/>
-
     <!--&lt;!&ndash; 终端选择 h5 端 &ndash;&gt;-->
     <!--<parameter name="terminal" value="h5"/>-->
     <!--<parameter name="browserName" value="chrome"/>-->

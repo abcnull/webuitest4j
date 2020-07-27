@@ -1,4 +1,4 @@
-package com.abcnull.common;
+package com.abcnull.basepage;
 
 import com.abcnull.util.RedisUtil;
 import org.openqa.selenium.WebDriver;
@@ -11,13 +11,13 @@ import redis.clients.jedis.Jedis;
  * @version 1.0.0
  * @date 2020/1/28
  */
-public class PageCommon extends BrowserCommon {
+public class BasePage extends BaseBrowser {
     /**
      * 构造器 1
      *
      * @param driver 驱动
      */
-    public PageCommon(WebDriver driver) {
+    public BasePage(WebDriver driver) {
         super(driver);
     }
 
@@ -27,7 +27,7 @@ public class PageCommon extends BrowserCommon {
      * @param driver 驱动
      * @param jedis  Jedis 连接
      */
-    public PageCommon(WebDriver driver, Jedis jedis) {
+    public BasePage(WebDriver driver, Jedis jedis) {
         super(driver, jedis);
     }
 
@@ -37,7 +37,7 @@ public class PageCommon extends BrowserCommon {
      * @param driver    驱动
      * @param redisUtil redis 连接工具类
      */
-    public PageCommon(WebDriver driver, RedisUtil redisUtil) {
+    public BasePage(WebDriver driver, RedisUtil redisUtil) {
         super(driver, redisUtil);
     }
 

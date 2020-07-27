@@ -1,4 +1,4 @@
-package com.abcnull.locator;
+package com.abcnull.pageobject.locator;
 
 import org.openqa.selenium.By;
 

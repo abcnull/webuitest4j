@@ -9,11 +9,6 @@ package com.abcnull.constant;
  */
 public class TestConstant {
     /**
-     * 字符编码
-     */
-    public static final String CHARSET = "UTF-8";
-
-    /**
      * 3000
      */
     public static final int THREE_THOUSANG = 3000;

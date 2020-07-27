@@ -1,4 +1,4 @@
-package com.abcnull.base;
+package com.abcnull.basetest;
 
 import com.abcnull.util.PropertiesReader;
 import com.abcnull.util.RedisUtil;
@@ -20,11 +20,6 @@ import java.util.Properties;
  */
 @Slf4j
 public class BaseTest {
-    /**
-     * 配置文件
-     */
-    private static Properties properties;
-
     /**
      * redis 连接池
      */
@@ -53,15 +48,16 @@ public class BaseTest {
     /**
      * 执行一个测试套之前执行
      * 进行测试配置文件的读取工作
+     * 由于 BeforeSuite 不会多线程去执行，因此对于配置文件读取未使用线程安全的操作
      *
-     * @param propertiesPath 测试配置文件项目路径
+     * @param propertiesPath 整个项目的测试配置文件相对于项目的路径
      * @throws IOException IOException
      */
     @BeforeSuite(alwaysRun = true)
     @Parameters({"propertiesPath"})
     public void beforeSuite(@Optional("src/test/resources/config/config.properties") String propertiesPath) throws IOException {
-        // 配置文件读取，存进静态变量 properties
-        properties = PropertiesReader.readProperties(propertiesPath);
+        // 配置文件读取
+        PropertiesReader.readProperties(propertiesPath);
         // redis 连接池初始化操作
         jedisPool = RedisUtil.getJedisPool();
     }

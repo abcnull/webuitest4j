@@ -1,8 +1,8 @@
-package com.abcnull.page;
+package com.abcnull.pageobject.page;
 
-import com.abcnull.common.PageCommon;
-import com.abcnull.data.AbcnullData;
-import com.abcnull.locator.AbcnullLocator;
+import com.abcnull.basepage.BasePage;
+import com.abcnull.pageobject.data.AbcnullData;
+import com.abcnull.pageobject.locator.AbcnullLocator;
 import com.abcnull.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +15,7 @@ import org.openqa.selenium.WebDriver;
  * @date 2020/1/28
  */
 @Slf4j
-public class AbcnullPage extends PageCommon {
+public class AbcnullPage extends BasePage {
     /**
      * 唯一构造器
      *

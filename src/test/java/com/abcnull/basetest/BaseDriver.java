@@ -1,4 +1,4 @@
-package com.abcnull.base;
+package com.abcnull.basetest;
 
 import com.abcnull.constant.TestConstant;
 import com.abcnull.util.PropertiesReader;

@@ -1,4 +1,4 @@
-package com.abcnull.data;
+package com.abcnull.pageobject.data;
 
 /**
  * abcnull 页面对象：数据

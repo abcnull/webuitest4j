@@ -1,6 +1,6 @@
 package com.abcnull.util;
 
-import com.abcnull.base.BaseTest;
+import com.abcnull.basetest.BaseTest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
