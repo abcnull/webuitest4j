@@ -7,9 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-
 import java.io.IOException;
-import java.util.Properties;
 
 /**
  * 测试基类

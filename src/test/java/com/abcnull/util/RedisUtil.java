@@ -2,7 +2,6 @@ package com.abcnull.util;
 
 import com.abcnull.constant.TestConstant;
 import lombok.extern.slf4j.Slf4j;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -19,62 +18,72 @@ public class RedisUtil {
     /**
      * redis 服务器 ip
      */
-    private static String redisIp;
+    private static final String redisIp;
 
     /**
      * redis 服务器端口号
      */
-    private static int redisPort;
+    private static final int redisPort;
 
     /**
      * redis 服务器连接密码
      */
-    private static String redisPwd;
+    private static final String redisPwd;
+
+    /* =========================================== */
+
+    /**
+     * jedis 最大分配对象数量
+     */
+    private static final int jedisPoolMaxTotal;
+
+    /**
+     * jedis 最大保存 idel 状态对象数量
+     */
+    private static final int jedisPoolMaxIdle;
+
+    /**
+     * jedis 连接池没有对象返回时最大等待时间
+     */
+    private static final int jedisPoolMaxWaitMillis;
+
+    /**
+     * jedis 调用 borrowObject 方法时，是否进行有效检查
+     */
+    private static final boolean jedisPoolTestOnBorrow;
+
+    /**
+     * jedis 调用 returnObject 方法时，是否进行有效检查
+     */
+    private static final boolean jedisPoolTestOnReturn;
+
+    /* =========================================== */
 
     /**
      * redis 连接池配置
      */
-    private static JedisPoolConfig jedisPoolConfig;
+    private static final JedisPoolConfig jedisPoolConfig;
 
     /**
      * redis 连接池
      */
     private static JedisPool jedisPool;
 
+    /* =========================================== */
+
     /**
      * jedis 连接
      */
     private Jedis jedis;
+
+    /* =========================================== */
 
     /**
      * jedis 键值超时时间
      */
     private int jedisExpireTime;
 
-    /**
-     * jedis 最大分配对象数量
-     */
-    private static int jedisPoolMaxTotal;
-
-    /**
-     * jedis 最大保存 idel 状态对象数量
-     */
-    private static int jedisPoolMaxIdle;
-
-    /**
-     * jedis 连接池没有对象返回时最大等待时间
-     */
-    private static int jedisPoolMaxWaitMillis;
-
-    /**
-     * jedis 调用 borrowObject 方法时，是否进行有效检查
-     */
-    private static boolean jedisPoolTestOnBorrow;
-
-    /**
-     * jedis 调用 returnObject 方法时，是否进行有效检查
-     */
-    private static boolean jedisPoolTestOnReturn;
+    /* =========================================== */
 
     /**
      * 本地线程存储用来存 Jedis 连接
@@ -88,14 +97,14 @@ public class RedisUtil {
     static {
         /* redis 的配置参数 */
         redisIp = PropertiesReader.getKey("redis.ip");
-        redisPort = Integer.valueOf(PropertiesReader.getKey("redis.port"));
+        redisPort = Integer.parseInt(PropertiesReader.getKey("redis.port"));
         redisPwd = PropertiesReader.getKey("redis.pwd");
         /* redis 连接池的配置参数 */
-        jedisPoolMaxTotal = Integer.valueOf(PropertiesReader.getKey("jedis.pool.maxTotal"));
-        jedisPoolMaxIdle = Integer.valueOf(PropertiesReader.getKey("jedis.pool.maxIdle"));
-        jedisPoolMaxWaitMillis = Integer.valueOf(PropertiesReader.getKey("jedis.pool.maxWaitMillis"));
-        jedisPoolTestOnBorrow = Boolean.valueOf(PropertiesReader.getKey("jedis.pool.testOnBorrow"));
-        jedisPoolTestOnReturn = Boolean.valueOf(PropertiesReader.getKey("jedis.pool.testOnReturn"));
+        jedisPoolMaxTotal = Integer.parseInt(PropertiesReader.getKey("jedis.pool.maxTotal"));
+        jedisPoolMaxIdle = Integer.parseInt(PropertiesReader.getKey("jedis.pool.maxIdle"));
+        jedisPoolMaxWaitMillis = Integer.parseInt(PropertiesReader.getKey("jedis.pool.maxWaitMillis"));
+        jedisPoolTestOnBorrow = Boolean.parseBoolean(PropertiesReader.getKey("jedis.pool.testOnBorrow"));
+        jedisPoolTestOnReturn = Boolean.parseBoolean(PropertiesReader.getKey("jedis.pool.testOnReturn"));
         /* redis 连接池开始配置 */
         jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxTotal(jedisPoolMaxTotal);
@@ -137,7 +146,7 @@ public class RedisUtil {
             newJedis = jedisPool.getResource();
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("redis 连接池生成失败！");
+            log.error("从连接池中生成一个新的连接失败！");
         }
         log.info("redis 连接池生成成功并产生一个新的连接");
         return newJedis;
