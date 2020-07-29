@@ -4,7 +4,7 @@
     <!-- 配置文件 -->
     <parameter name="propertiesPath" value="src/test/resources/config/config.properties"/>
 
-    <!-- 外部传参 -->
+    <!-- 外部传参示例 -->
     <parameter name="param1" value="${param1}"/>
     <parameter name="param2" value="${param2}"/>
 

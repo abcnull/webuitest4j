@@ -5,8 +5,7 @@ import com.abcnull.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
+
 import java.io.IOException;
 
 /**
@@ -19,19 +18,9 @@ import java.io.IOException;
 @Slf4j
 public class BaseTest {
     /**
-     * redis 连接池
-     */
-    private static JedisPool jedisPool;
-
-    /**
      * redis 连接的工具类
      */
     public RedisUtil redisUtil;
-
-    /**
-     * jedis 连接
-     */
-    public Jedis jedis;
 
     /**
      * 驱动基类
@@ -57,11 +46,13 @@ public class BaseTest {
         // 配置文件读取
         PropertiesReader.readProperties(propertiesPath);
         // redis 连接池初始化操作
-        jedisPool = RedisUtil.getJedisPool();
+        RedisUtil.initJedisPool();
+        // todo : 这里可以自己定制其他工具初始化操作
     }
 
     /**
      * 执行一个测试用例之前执行
+     * 这里做多线程的处理
      *
      * @param browserName    浏览器名
      * @param browserVersion 浏览器版本
@@ -74,20 +65,11 @@ public class BaseTest {
     public void beforeTest(@Optional("chrome") String browserName, @Optional("pc") String terminal, @Optional("desktop") String deviceName, @Optional() String remoteIP, @Optional("4444") int remotePort, @Optional() String browserVersion) throws Exception {
         /* redis 新连接获取 */
         redisUtil = new RedisUtil();
-        // 拿到一个新的 jedis 连接，设置 redisUtil 中的 jedis 以及键值超时时间
-        redisUtil.setJedisAndExpire(redisUtil.getNewJedis());
-        jedis = redisUtil.getJedis();
+        redisUtil.initJedis();
         /* 驱动配置 */
         baseDriver = new BaseDriver();
-        // 如果不存在 hub 地址
-        if (remoteIP == null || remoteIP.isEmpty()) {
-            baseDriver.startBrowser(browserName, terminal, deviceName);
-        }
-        // 如果存在 hub 地址
-        else {
-            baseDriver.startBrowser(browserName, terminal, deviceName, remoteIP, remotePort, browserVersion);
-        }
-        driver = baseDriver.getDriver();
+        driver = baseDriver.startBrowser(browserName, terminal, deviceName, remoteIP, remotePort, browserVersion);
+        // todo : 由于线程隔离设为 test，这里可以通过 new 一个对象来达到线程隔离的效果，可以做其他的扩展定制
     }
 
     /**
@@ -95,7 +77,7 @@ public class BaseTest {
      */
     @BeforeClass(alwaysRun = true)
     public void beforeClass() {
-        // 登录操作
+        // todo : 登录操作可以放在这里
     }
 
     /**
@@ -103,7 +85,7 @@ public class BaseTest {
      */
     @AfterClass(alwaysRun = true)
     public void afterClass() {
-        // 注销操作
+        // todo : 登录的注销或其他操作可以放在这里
     }
 
     /**
@@ -122,5 +104,6 @@ public class BaseTest {
      */
     @AfterSuite(alwaysRun = true)
     public void afterSuite() {
+        // todo : 可自己定制
     }
 }
