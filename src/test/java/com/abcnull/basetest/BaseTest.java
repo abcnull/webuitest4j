@@ -1,7 +1,9 @@
 package com.abcnull.basetest;
 
+import com.abcnull.pageobject.page.LoginPage;
 import com.abcnull.util.PropertiesReader;
 import com.abcnull.util.RedisUtil;
+import com.abcnull.util.WordartDisplayer;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
@@ -19,6 +21,7 @@ import java.io.IOException;
 public class BaseTest {
     /**
      * redis 连接的工具类
+     * 对外暴露
      */
     public RedisUtil redisUtil;
 
@@ -29,6 +32,7 @@ public class BaseTest {
 
     /**
      * 驱动
+     * 对外暴露
      */
     public WebDriver driver;
 
@@ -43,22 +47,26 @@ public class BaseTest {
     @BeforeSuite(alwaysRun = true)
     @Parameters({"propertiesPath"})
     public void beforeSuite(@Optional("src/test/resources/config/config.properties") String propertiesPath) throws IOException {
+        // 显示文字 webuitest4j
+        WordartDisplayer.display();
         // 配置文件读取
         PropertiesReader.readProperties(propertiesPath);
         // redis 连接池初始化操作
         RedisUtil.initJedisPool();
-        // todo : 这里可以自己定制其他工具初始化操作
+        // todo : 这里可以自己定制其他工具初始化操作（看需要）
     }
 
     /**
      * 执行一个测试用例之前执行
      * 这里做多线程的处理
      *
-     * @param browserName    浏览器名
+     * @param browserName    浏览器名（必传）
+     * @param terminal       终端 pc/h5（默认是 pc，对于 h5 需要传 h5）
+     * @param deviceName     设备名（默认是 desktop，对于 h5 需要传手机型号）
+     * @param remoteIP       远端 ip（远端运行必传）
+     * @param remotePort     端口（默认是 4444）
      * @param browserVersion 浏览器版本
-     * @param remoteIP       hub 平台地址
-     * @param remotePort     hub 平台端口号
-     * @throws Exception 抛出浏览器没有启动成功异常
+     * @throws Exception 匹配不到 browserName 异常
      */
     @BeforeTest(alwaysRun = true)
     @Parameters({"browserName", "terminal", "deviceName", "remoteIP", "remotePort", "browserVersion"})
@@ -69,7 +77,11 @@ public class BaseTest {
         /* 驱动配置 */
         baseDriver = new BaseDriver();
         driver = baseDriver.startBrowser(browserName, terminal, deviceName, remoteIP, remotePort, browserVersion);
-        // todo : 由于线程隔离设为 test，这里可以通过 new 一个对象来达到线程隔离的效果，可以做其他的扩展定制
+        // todo : 由于线程隔离设为 test，这里可以通过 new 一个对象来达到线程隔离的效果，可以做其他的扩展定制（看需要）
+        /* todo : 登录操作可以放在这里（看需要）
+         * LoginPage loginPage = new LoginPage(driver);
+         * loginPage.loginByUI();
+         */
     }
 
     /**
@@ -77,7 +89,10 @@ public class BaseTest {
      */
     @BeforeClass(alwaysRun = true)
     public void beforeClass() {
-        // todo : 登录操作可以放在这里
+        // todo : 登录操作可以放在这里（看需要）
+        LoginPage loginPage = new LoginPage(driver, redisUtil);
+        loginPage.enterPage();
+        loginPage.loginByAPI();
     }
 
     /**
@@ -85,11 +100,13 @@ public class BaseTest {
      */
     @AfterClass(alwaysRun = true)
     public void afterClass() {
-        // todo : 登录的注销或其他操作可以放在这里
+        // todo : 登录的注销或其他操作可以放在这里（看需要）
     }
 
     /**
      * 执行一个测试用例之后执行
+     *
+     * @throws InterruptedException sleep 休眠异常
      */
     @AfterTest(alwaysRun = true)
     public void afterTest() throws InterruptedException {
@@ -97,6 +114,7 @@ public class BaseTest {
         baseDriver.closeBrowser();
         // redis 连接回收
         redisUtil.returnJedis();
+        // todo : 其他工具的释放操作（看需要）
     }
 
     /**
@@ -104,6 +122,6 @@ public class BaseTest {
      */
     @AfterSuite(alwaysRun = true)
     public void afterSuite() {
-        // todo : 可自己定制
+        // todo : 可自己定制（看需要）
     }
 }

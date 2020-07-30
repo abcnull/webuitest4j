@@ -17,7 +17,7 @@ import java.util.HashMap;
  * @date 2019/9/9
  */
 public class RePrioritizingListener implements IAnnotationTransformer {
-    HashMap<Object, Integer> priorityMap = new HashMap<Object, Integer>();
+    HashMap<Object, Integer> priorityMap = new HashMap<>();
     Integer class_priorityCounter = 10000;
     // The length of the final priority assigned to each method.
     Integer max_testpriorityLength = 4;
@@ -34,7 +34,7 @@ public class RePrioritizingListener implements IAnnotationTransformer {
         // class of the test method.
         Class<?> declaringClass = testMethod.getDeclaringClass();
         // Current priority of the test assigned at the test method.
-        Integer test_priority = annotation.getPriority();
+        int test_priority = annotation.getPriority();
         // Current class priority.
         Integer current_ClassPriority = priorityMap.get(declaringClass);
 
@@ -43,20 +43,21 @@ public class RePrioritizingListener implements IAnnotationTransformer {
             priorityMap.put(declaringClass, current_ClassPriority);
         }
 
-        String concatenatedPriority = test_priority.toString();
+        // String concatenatedPriority = Integer.toString(test_priority);
+        StringBuffer concatenatedPriority = new StringBuffer(String.valueOf(test_priority));
 
         // Adds 0's to start of this number.
         while (concatenatedPriority.length() < max_testpriorityLength) {
-            concatenatedPriority = "0" + concatenatedPriority;
+            concatenatedPriority.insert(0, "0");
         }
 
         // Concatenates our class counter to the test level priority (example
         // for test with a priority of 1: 1000100001; same test class with a
         // priority of 2: 1000100002; next class with a priority of 1. 1000200001)
-        concatenatedPriority = current_ClassPriority.toString() + concatenatedPriority;
+        concatenatedPriority.insert(0, current_ClassPriority.toString());
 
         //Sets the new priority to the test method.
-        annotation.setPriority(Integer.parseInt(concatenatedPriority));
+        annotation.setPriority(Integer.parseInt(concatenatedPriority.toString()));
 
         String printText = testMethod.getName() + " Priority = " + concatenatedPriority;
         Reporter.log(printText);

@@ -4,28 +4,11 @@ import com.abcnull.constant.TestConstant;
 import com.abcnull.util.PropertiesReader;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.opera.OperaOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.Thread.sleep;
 
 /**
  * 驱动基类
@@ -74,15 +57,15 @@ public class BaseDriver {
     /**
      * 打开相应的浏览器
      *
-     * @param browserName       浏览器名
-     * @param terminal          终端 pc/h5
-     * @param deviceName        设备名
-     * @param remoteIP          远端 ip
-     * @param remotePort        端口
-     * @param browserVersion    浏览器版本
+     * @param browserName    浏览器名
+     * @param terminal       终端 pc/h5
+     * @param deviceName     设备名
+     * @param remoteIP       远端 ip
+     * @param remotePort     端口
+     * @param browserVersion 浏览器版本
      * @return WebDriver
      */
-    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) {
+    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) throws Exception {
         /* 驱动基本信息参数 */
         this.browserName = browserName.toLowerCase();
         /* 终端设备信息参数 */
@@ -101,9 +84,11 @@ public class BaseDriver {
         DriverHandler edgeDriverHandler = new EdgeDriverHandler();
         DriverHandler internetExplorerDriverHandler = new InternetExplorerDriverHandler();
         DriverHandler tailHandler = new TailHandler();
+
         /* 构建一条驱动初始化的完整责任链 */
         headHandler.setNext(chromeDriverHandler).setNext(firefoxDriverHandler).setNext(operaDriverHandler)
                 .setNext(edgeDriverHandler).setNext(internetExplorerDriverHandler).setNext(tailHandler);
+
         /* 通过责任链启动浏览器 */
         this.driver = headHandler.start(browserName, terminal, deviceName, remoteIP, remotePort, browserVersion);
 
@@ -143,14 +128,17 @@ public class BaseDriver {
     }
 
     /**
-     * 驱动结束并关闭浏览器
+     * 关闭浏览器
+     *
+     * @throws InterruptedException sleep 休眠异常
      */
     public void closeBrowser() throws InterruptedException {
         // JS 显示弹出框表示测试结束
-        ((JavascriptExecutor)driver).executeScript("alert('测试完成，浏览器在3s后关闭！')");
-        Thread.sleep(TestConstant.THREE_THOUSANG);
+        ((JavascriptExecutor) driver).executeScript("alert('测试完成，浏览器在3s后关闭！')");
+        sleep(TestConstant.THREE_THOUSANG);
         if (driver != null) {
             driver.quit();
+            driver = null;
         }
         log.info(browserName + "浏览器已成功关闭！");
     }

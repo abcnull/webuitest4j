@@ -17,7 +17,16 @@ import org.openqa.selenium.WebDriver;
 @Slf4j
 public class BaiduPage extends BasePage {
     /**
-     * 唯一构造器
+     * 构造器 1
+     *
+     * @param driver 驱动
+     */
+    public BaiduPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * 构造器 2
      *
      * @param driver    驱动
      * @param redisUtil redis 存储工具类
@@ -27,11 +36,11 @@ public class BaiduPage extends BasePage {
     }
 
     /**
-     * 重写跳转页面操作
+     * 进入百度页面
      */
-    public void jumpPage() {
+    public void enterPage() {
         log.info("跳转进入百度页面");
-        super.jumpPage(BaiduData.URL);
+        super.enterPage(BaiduData.URL);
     }
 
     /**
@@ -47,19 +56,13 @@ public class BaiduPage extends BasePage {
         clickButton(BaiduLocator.SEARCH_BUTTON);
 
         /*
-         * redisUtil 工具类是对 jedis 的一层封装，其中已设置了所有键值对有效时间
-         * redisUtil 来存取键值对，放在一个线程中被别的类使用到
-         * redisUtil 存取键值对设置了键值过期时限，这个时限在 properties 文件中已配置
-         * 若想自己设置时限可以直接使用 jedis 而不使用 redisUtil，如下所示：
+         * redisUtil 工具类是对 jedisPool 和 jedis 的一层封装，配置文件中已设置了所有键值对有效时间
+         * redisUtil 存取键值对设置了键值过期时限，这个时限在 properties 文件中已配置，若配置文件取不到表示无限时间
+         * 可以传 2 个或 3 各参数，具体可自行查看代码
+         *
+         * redisUtil.setKey("a", "1");
+         * System.out.println("redis 中的值为：" + redisUtil.getKey("a"));
          */
-//        redisUtil.setKey("a", "1");
-//        System.out.println("redis 中的值为：" + redisUtil.getKey("a"));
-
-        /*
-        jedis.set("a", "1");
-        // 设置键值过期时间 600 s
-        jedis.expire("a", 600);
-        */
 
         // 返回是否进入指定页面
         return ifTitleContains(BaiduData.TEXT);

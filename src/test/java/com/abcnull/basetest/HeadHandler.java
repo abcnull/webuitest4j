@@ -13,29 +13,31 @@ public class HeadHandler extends DriverHandler {
     /**
      * 启动本地浏览器
      *
-     * @param browserName   浏览器名
-     * @param terminal      终端 pc/h5
-     * @param deviceName    设备名
+     * @param browserName 浏览器名
+     * @param terminal    终端 pc/h5
+     * @param deviceName  设备名
      * @return WebDriver
+     * @throws Exception 匹配不到 browserName 异常
      */
     @Override
-    public WebDriver startBrowser(String browserName, String terminal, String deviceName) {
+    public WebDriver startBrowser(String browserName, String terminal, String deviceName) throws Exception {
         return next.startBrowser(browserName, terminal, deviceName);
     }
 
     /**
      * 启动远端浏览器
      *
-     * @param browserName       浏览器名
-     * @param terminal          终端 pc/h5
-     * @param deviceName        设备名
-     * @param remoteIP          远端 ip
-     * @param remotePort        端口
-     * @param browserVersion    浏览器版本
+     * @param browserName    浏览器名
+     * @param terminal       终端 pc/h5
+     * @param deviceName     设备名
+     * @param remoteIP       远端 ip
+     * @param remotePort     端口
+     * @param browserVersion 浏览器版本
      * @return WebDriver
+     * @throws Exception 匹配不到 browserName 异常
      */
     @Override
-    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) {
+    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) throws Exception {
         return next.startBrowser(browserName, terminal, deviceName, remoteIP, remotePort, browserVersion);
     }
 }

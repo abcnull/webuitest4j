@@ -176,7 +176,7 @@ public class ExtentTestReporterListener implements IReporter {
 
         if (tests.size() > 0) {
             // 调整用例排序，按时间排序
-            Set<ITestResult> treeSet = new TreeSet<ITestResult>(new Comparator<ITestResult>() {
+            Set<ITestResult> treeSet = new TreeSet<>(new Comparator<ITestResult>() {
                 @Override
                 public int compare(ITestResult o1, ITestResult o2) {
                     return o1.getStartMillis() < o2.getStartMillis() ? -1 : 1;
@@ -185,23 +185,23 @@ public class ExtentTestReporterListener implements IReporter {
             treeSet.addAll(tests.getAllResults());
             for (ITestResult result : treeSet) {
                 Object[] parameters = result.getParameters();
-                String name = "";
+                StringBuffer name = new StringBuffer();
                 // 如果有参数，则使用参数的 toString 组合代替报告中的 name
                 for (Object param : parameters) {
-                    name += param.toString();
+                    name.append(param.toString());
                 }
                 if (name.length() > 0) {
                     if (name.length() > 50) {
-                        name = name.substring(0, 49) + "...";
+                        name = new StringBuffer(name.substring(0, 49) + "...");
                     }
                 } else {
-                    name = result.getMethod().getMethodName();
+                    name = new StringBuffer(result.getMethod().getMethodName());
                 }
                 if (extenttest == null) {
-                    test = extent.createTest(name);
+                    test = extent.createTest(name.toString());
                 } else {
                     // 作为子节点进行创建时，设置同父节点的标签一致，便于报告检索。
-                    test = extenttest.createNode(name).assignCategory(categories);
+                    test = extenttest.createNode(name.toString()).assignCategory(categories);
                 }
                 // test.getModel().setDescription(description.toString());
                 // test = extent.createTest(result.getMethod().getMethodName());

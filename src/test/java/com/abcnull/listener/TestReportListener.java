@@ -7,6 +7,7 @@ import org.testng.*;
 import org.testng.xml.XmlSuite;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -23,37 +24,37 @@ public class TestReportListener implements IReporter {
     /**
      * Data 日期
      */
-    private static Date date = new Date();
+    private static final Date date = new Date();
 
     /**
      * 日期类型
      */
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年M月d日H时m分s秒");
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年M月d日H时m分s秒");
 
     /**
      * 报告时间
      */
-    private static String reportdate = simpleDateFormat.format(date);
+    private static final String reportdate = simpleDateFormat.format(date);
 
     /**
      * 报告名字
      */
-    private static String reportName = "WebUI自动化测试报告-" + reportdate;
+    private static final String reportName = "WebUI自动化测试报告-" + reportdate;
 
     /**
      * 产出报告依据的模板的路径（包括模板文件）
      */
-    private String templatePath = this.getClass().getResource("/").getPath() + "report" + File.separator + "template.html";
+    private final String templatePath = this.getClass().getResource("/").getPath() + "report" + File.separator + "template.html";
 
     /**
      * 产出报告的路径（不包括报告文件）
      */
-    private String reportDirPath = System.getProperty("user.dir") + File.separator + "target" + File.separator + "test-output" + File.separator + "report";
+    private final String reportDirPath = System.getProperty("user.dir") + File.separator + "target" + File.separator + "test-output" + File.separator + "report";
 
     /**
      * 产出报告的路径（包括报告文件）
      */
-    private String reportPath = reportDirPath + File.separator + reportName + ".html";
+    private final String reportPath = reportDirPath + File.separator + reportName + ".html";
 
     /**
      * 测试成功数
@@ -83,7 +84,7 @@ public class TestReportListener implements IReporter {
     /**
      * 测试报告标题
      */
-    private String project = "WebUI自动化测试报告";
+    private final String project = "WebUI自动化测试报告";
 
     /**
      * 生成报告
@@ -95,7 +96,7 @@ public class TestReportListener implements IReporter {
     @Override
     public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
         log.info("开始产生 BeautifulReport 测试报告");
-        List<ITestResult> list = new ArrayList<ITestResult>();
+        List<ITestResult> list = new ArrayList<>();
         for (ISuite suite : suites) {
             Map<String, ISuiteResult> suiteResults = suite.getResults();
             for (ISuiteResult suiteResult : suiteResults.values()) {
@@ -125,7 +126,7 @@ public class TestReportListener implements IReporter {
      */
     private ArrayList<ITestResult> listTestResult(IResultMap resultMap) {
         Set<ITestResult> results = resultMap.getAllResults();
-        return new ArrayList<ITestResult>(results);
+        return new ArrayList<>(results);
     }
 
     /**
@@ -134,12 +135,7 @@ public class TestReportListener implements IReporter {
      * @param list List<ITestResult>
      */
     private void sort(List<ITestResult> list) {
-        Collections.sort(list, new Comparator<ITestResult>() {
-            @Override
-            public int compare(ITestResult r1, ITestResult r2) {
-                return r1.getStartMillis() < r2.getStartMillis() ? -1 : 1;
-            }
-        });
+        list.sort((r1, r2) -> r1.getStartMillis() < r2.getStartMillis() ? -1 : 1);
     }
 
     /**
@@ -158,7 +154,7 @@ public class TestReportListener implements IReporter {
      */
     private void outputResult(List<ITestResult> list) {
         try {
-            List<ReportInfo> listInfo = new ArrayList<ReportInfo>();
+            List<ReportInfo> listInfo = new ArrayList<>();
             int index = 0;
             for (ITestResult result : list) {
                 String testName = result.getTestContext().getCurrentXmlTest().getName();
@@ -192,7 +188,7 @@ public class TestReportListener implements IReporter {
                 info.setLog(log);
                 listInfo.add(info);
             }
-            Map<String, Object> result = new HashMap<String, Object>();
+            Map<String, Object> result = new HashMap<>();
             //result.put("testName", name);
             System.out.println("!@#= 运行时间为" + totalTime + "################");
             result.put("testName", this.project);
@@ -205,7 +201,8 @@ public class TestReportListener implements IReporter {
             result.put("testResult", listInfo);
             Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
             String template = this.read(reportDirPath, templatePath);
-            BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(reportPath)), "UTF-8"));
+            BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(reportPath)), StandardCharsets.UTF_8));
+            assert template != null;
             template = template.replace("${resultData}", gson.toJson(result));
             output.write(template);
             output.flush();
@@ -424,14 +421,12 @@ public class TestReportListener implements IReporter {
         StringBuffer stringBuffer = new StringBuffer();
         try {
             inputStream = new FileInputStream(templateFile);
-            int index = 0;
+            int index;
             byte[] b = new byte[1024];
             while ((index = inputStream.read(b)) != -1) {
                 stringBuffer.append(new String(b, 0, index));
             }
             return stringBuffer.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

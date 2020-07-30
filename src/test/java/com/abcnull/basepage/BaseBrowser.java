@@ -9,10 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import redis.clients.jedis.Jedis;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -44,11 +41,6 @@ public class BaseBrowser {
     protected WebDriverWait wait;
 
     /**
-     * Jedis 连接
-     */
-    protected Jedis jedis;
-
-    /**
      * redis 连接工具类
      */
     protected RedisUtil redisUtil;
@@ -63,28 +55,12 @@ public class BaseBrowser {
         this.actions = new Actions(driver);
         this.je = ((JavascriptExecutor) driver);
         // 显示等待时长
-        long timeout = Long.valueOf(PropertiesReader.getKey("driver.timeouts.webDriverWait"));
-        wait = new WebDriverWait(driver, timeout);
+        long timeout = Long.parseLong(PropertiesReader.getKey("driver.timeouts.webDriverWait"));
+        this.wait = new WebDriverWait(driver, timeout);
     }
 
     /**
      * 构造器 2
-     *
-     * @param driver 驱动
-     * @param jedis  Jedis 连接
-     */
-    public BaseBrowser(WebDriver driver, Jedis jedis) {
-        this.driver = driver;
-        this.actions = new Actions(driver);
-        this.je = ((JavascriptExecutor) driver);
-        // 显示等待时长
-        long timeout = Long.valueOf(PropertiesReader.getKey("driver.timeouts.webDriverWait"));
-        wait = new WebDriverWait(driver, timeout);
-        this.jedis = jedis;
-    }
-
-    /**
-     * 构造器 3
      *
      * @param driver    驱动
      * @param redisUtil redis 连接工具类
@@ -94,10 +70,9 @@ public class BaseBrowser {
         this.actions = new Actions(driver);
         this.je = ((JavascriptExecutor) driver);
         // 显示等待时长
-        long timeout = Long.valueOf(PropertiesReader.getKey("driver.timeouts.webDriverWait"));
-        wait = new WebDriverWait(driver, timeout);
+        long timeout = Long.parseLong(PropertiesReader.getKey("driver.timeouts.webDriverWait"));
+        this.wait = new WebDriverWait(driver, timeout);
         this.redisUtil = redisUtil;
-        this.jedis = redisUtil.getJedis();
     }
 
     /*============================== 基本元素操作 ==============================*/
@@ -129,10 +104,10 @@ public class BaseBrowser {
      * 输入框输入数据
      *
      * @param locator By 类型元素定位
-     * @param content 输入的内容
+     * @param content 输入的内容，支持多内容，可以键盘输入
      * @return 输入框元素
      */
-    public WebElement sendInput(By locator, String content) {
+    public WebElement sendInput(By locator, CharSequence... content) {
         WebElement inputElement = locateElement(locator);
         inputElement.clear();
         inputElement.sendKeys(content);
@@ -145,20 +120,18 @@ public class BaseBrowser {
      * @param locator 元素定位
      */
     public void moveToElement(By locator) {
-        actions.moveToElement(locateElement(locator));
-        actions.perform();
+        actions.moveToElement(locateElement(locator)).perform();
     }
 
     /**
      * 拖拽指定元素
      *
-     * @param fromLocator   从...元素
-     * @param toLocator     至...元素
+     * @param fromLocator 从...元素
+     * @param toLocator   至...元素
      */
     public void dragAndDropElement(By fromLocator, By toLocator) {
         wait.until(ExpectedConditions.elementToBeClickable(fromLocator));
-        actions.dragAndDrop(locateElement(fromLocator), locateElement(toLocator));
-        actions.perform();
+        actions.dragAndDrop(locateElement(fromLocator), locateElement(toLocator)).perform();
     }
 
     /**
@@ -166,14 +139,14 @@ public class BaseBrowser {
      *
      * @param url 网址
      */
-    public void jumpPage(String url) {
+    public void enterPage(String url) {
         driver.get(url);
     }
 
-    /*============================== 切换句柄 ==============================*/
+    /*============================== 切换窗口句柄 ==============================*/
 
     /**
-     * 查找下一个句柄，建议两个窗口使用
+     * 查找下一个句柄，若只有一个窗口则句柄不变
      *
      * @return 驱动
      */
@@ -181,9 +154,9 @@ public class BaseBrowser {
         // 当前窗口句柄
         String currentHandle = driver.getWindowHandle();
         // 所有窗口句柄
-        Set<String> allHandles = driver.getWindowHandles();
+        Set<String> allHandlesSet = driver.getWindowHandles();
         // 寻找下一个句柄
-        for (String handle : allHandles) {
+        for (String handle : allHandlesSet) {
             if (!handle.equals(currentHandle)) {
                 return driver.switchTo().window(handle);
             }
@@ -197,15 +170,61 @@ public class BaseBrowser {
      * @param num 号码从 1 开始
      * @return 驱动
      */
-    public WebDriver switchHandle(int num) {
+    public WebDriver switchHandleByNum(int num) {
+        // 所有窗口句柄
+        Set<String> allHandlesSet = driver.getWindowHandles();
+        Object[] allHandlesArr = allHandlesSet.toArray();
+        // 切换句柄
+        return driver.switchTo().window(allHandlesArr[num - 1].toString());
+    }
+
+    /**
+     * 多窗口切换句柄，依据传入的窗口标题
+     *
+     * @param title contains(窗口 title)
+     * @return 驱动
+     * @throws Exception 找不到指定窗口句柄异常
+     */
+    public WebDriver switchHandleByTitle(String title) throws Exception {
         // 当前窗口句柄
         String currentHandle = driver.getWindowHandle();
         // 所有窗口句柄
         Set<String> allHandlesSet = driver.getWindowHandles();
-        List<String> allHandlesList = new ArrayList<>(allHandlesSet);
-        // 切换句柄
-        return driver.switchTo().window(allHandlesList.get(num - 1));
+        // 寻找第一个 title 符合的句柄
+        for (String handle : allHandlesSet) {
+            driver.switchTo().window(handle);
+            if (driver.getTitle().contains(title)) {
+                return driver;
+            }
+        }
+        driver.switchTo().window(currentHandle);
+        throw new Exception(title + "窗口的句柄不存在");
     }
+
+    /**
+     * 多窗口切换句柄，依据传入的窗口 url
+     *
+     * @param url contains(窗口 url)
+     * @return 驱动
+     * @throws Exception 找不到指定窗口句柄异常
+     */
+    public WebDriver switchHandleByUrl(String url) throws Exception {
+        // 当前窗口句柄
+        String currentHandle = driver.getWindowHandle();
+        // 所有窗口句柄
+        Set<String> allHandlesSet = driver.getWindowHandles();
+        // 寻找第一个 url 符合的句柄
+        for (String handle : allHandlesSet) {
+            driver.switchTo().window(handle);
+            if (driver.getCurrentUrl().contains(url)) {
+                return driver;
+            }
+        }
+        driver.switchTo().window(currentHandle);
+        throw new Exception(url + "窗口的句柄不存在");
+    }
+
+    /*============================== 切换 frame 结构 ==============================*/
 
     /**
      * 根据元素位置切换 frame 结构
@@ -257,21 +276,21 @@ public class BaseBrowser {
     }
 
     /**
-     * 页面滑动到最顶上
+     * 滑动到页面最顶上
      */
     public void scrollToTop() {
-        executeScript("window.scrollTo(0, 0)");
+        executeScript("window.scrollTo(window.pageXOffset, 0)");
     }
 
     /**
-     * 页面滑动到最低端
+     * 滑动到页面最低端
      */
     public void scrollToBottom() {
-        executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        executeScript("window.scrollTo(window.pageXOffset, document.body.scrollHeight)");
     }
 
     /**
-     * 页面滑动使得元素顶端和页面顶端对齐
+     * 滑动使得元素和窗口顶端对齐
      *
      * @param by 需要和页面顶端对齐的元素
      */
@@ -280,7 +299,7 @@ public class BaseBrowser {
     }
 
     /**
-     * 页面滑动使得元素底端和页面底端对齐
+     * 滑动使得元素和窗口底部对齐
      *
      * @param by 需要和页面底端对齐的元素
      */
@@ -288,36 +307,19 @@ public class BaseBrowser {
         executeScript("arguments[0].scrollIntoView(false);", driver.findElement(by));
     }
 
-    /*============================== 页面断言 ==============================*/
-
     /**
-     * 判断当前页面标题是否是指定标题
-     *
-     * @param title 指定标题
-     * @return 布尔值
+     * 滑动到页面最右边
      */
-    public boolean ifTitleIs(String title) {
-        return wait.until(ExpectedConditions.titleIs(title));
+    public void scrollToRight() {
+        executeScript("window.scrollTo(document.body.scrollWidth, window.pageYOffset)");
     }
 
     /**
-     * 判断当前页面标题是否含有指定文本
-     *
-     * @param text 指定文本
-     * @return 布尔值
+     * 滑动到页面最左边
      */
-    public boolean ifTitleContains(String text) {
-        return wait.until(ExpectedConditions.titleContains(text));
+    public void scrollToLeft() {
+        executeScript("0, window.pageYOffset)");
     }
 
-    /**
-     * 判断当前页面某个元素的文本值是否是指定文本
-     *
-     * @param locator 页面元素定位
-     * @param text    指定文本
-     * @return 布尔值
-     */
-    public boolean ifTextExists(By locator, String text) {
-        return wait.until(ExpectedConditions.textToBePresentInElementLocated(locator, text));
-    }
+    // todo : 页面中其他的最基本操作，可自行封装
 }

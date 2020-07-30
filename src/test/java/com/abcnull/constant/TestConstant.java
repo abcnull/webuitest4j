@@ -9,12 +9,12 @@ package com.abcnull.constant;
  */
 public class TestConstant {
     /**
-     * 3000
+     * int 3000
      */
     public static final int THREE_THOUSANG = 3000;
 
     /**
-     * 10000
+     * int 10000
      */
     public static final int TEN_THOUSANG = 10000;
 }

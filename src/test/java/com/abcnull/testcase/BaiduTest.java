@@ -12,9 +12,6 @@ import org.testng.annotations.Test;
  * @date 2020/1/28
  */
 public class BaiduTest extends BaseTest {
-    /**
-     * 百度页面对象
-     */
     private BaiduPage baiduPage;
 
     @Test(description = "百度首页_搜索测试", priority = 1)
@@ -22,7 +19,7 @@ public class BaiduTest extends BaseTest {
         // 初始化百度页面
         baiduPage = new BaiduPage(driver, redisUtil);
         // 进入百度首页
-        baiduPage.jumpPage();
+        baiduPage.enterPage();
         // 百度页面搜索检测
         assert baiduPage.search();
     }

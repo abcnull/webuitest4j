@@ -17,7 +17,16 @@ import org.openqa.selenium.WebDriver;
 @Slf4j
 public class AbcnullPage extends BasePage {
     /**
-     * 唯一构造器
+     * 构造器 1
+     *
+     * @param driver 驱动
+     */
+    public AbcnullPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * 构造器 2
      *
      * @param driver    驱动
      * @param redisUtil redis 存储工具类
@@ -27,11 +36,11 @@ public class AbcnullPage extends BasePage {
     }
 
     /**
-     * 重写跳转页面操作
+     * 进入 abcnull 页面
      */
-    public void jumpPage() {
-        super.jumpPage(AbcnullData.URL);
+    public void enterPage() {
         log.info("跳转进入 abcnull 页面");
+        super.enterPage(AbcnullData.URL);
     }
 
     /**
@@ -50,7 +59,7 @@ public class AbcnullPage extends BasePage {
          * 由于我的浏览器开启会多一个 data 页面，因此我这里有三个页面
          * 没有 data 页面的小伙伴建议采用 switchNextHandle 方法
          */
-        switchHandle(3);
+        switchHandleByNum(3);
         // 返回是否进入指定页面
         return ifTitleContains(AbcnullData.BLOGTITLE);
     }

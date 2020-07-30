@@ -10,13 +10,30 @@ import org.openqa.selenium.WebDriver;
  * @date 2020/7/29 18:52
  */
 public class TailHandler extends DriverHandler {
+    /**
+     * @param browserName 浏览器名
+     * @param terminal    终端 pc/h5
+     * @param deviceName  设备名
+     * @return WebDriver
+     * @throws Exception 匹配不到 browserName 异常
+     */
     @Override
-    public WebDriver startBrowser(String browserName, String terminal, String deviceName) {
-        return null;
+    public WebDriver startBrowser(String browserName, String terminal, String deviceName) throws Exception {
+        throw new Exception("不支持的浏览器类型" + "(" + browserName + ")");
     }
 
+    /**
+     * @param browserName    浏览器名
+     * @param terminal       终端 pc/h5
+     * @param deviceName     设备名
+     * @param remoteIP       远端 ip
+     * @param remotePort     端口
+     * @param browserVersion 浏览器版本
+     * @return WebDriver
+     * @throws Exception 匹配不到 browserName 异常
+     */
     @Override
-    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) {
-        return null;
+    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) throws Exception {
+        throw new Exception("不支持的浏览器类型" + "(" + browserName + ")");
     }
 }

@@ -12,9 +12,6 @@ import org.testng.annotations.Test;
  * @date 2020/1/28
  */
 public class AbcnullTest extends BaseTest {
-    /**
-     * abcnull 页面对象
-     */
     private AbcnullPage abcnullPage;
 
     @Test(description = "abcnull页面_搜索测试", priority = 1)
@@ -22,7 +19,7 @@ public class AbcnullTest extends BaseTest {
         // 初始化 abcnull 页面
         abcnullPage = new AbcnullPage(driver, redisUtil);
         // 进入 abcnull 首页
-        abcnullPage.jumpPage();
+        abcnullPage.enterPage();
         // abncull 页面搜索检测
         assert abcnullPage.search();
     }

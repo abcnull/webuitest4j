@@ -26,13 +26,14 @@ public class InternetExplorerDriverHandler extends DriverHandler {
      * todo : 指定下载文件路径暂缺
      * todo : 手机浏览器 h5 暂缺
      *
-     * @param browserName   浏览器名
-     * @param terminal      终端 pc/h5
-     * @param deviceName    设备名
+     * @param browserName 浏览器名
+     * @param terminal    终端 pc/h5
+     * @param deviceName  设备名
      * @return WebDriver
+     * @throws Exception 匹配不到 browserName 异常
      */
     @Override
-    public WebDriver startBrowser(String browserName, String terminal, String deviceName) {
+    public WebDriver startBrowser(String browserName, String terminal, String deviceName) throws Exception {
         /* 当不是 IE 进入责任链的下一环 */
         if (!browserName.toLowerCase().equals("ie")) {
             return next.startBrowser(browserName, terminal, deviceName);
@@ -66,16 +67,17 @@ public class InternetExplorerDriverHandler extends DriverHandler {
      * todo : 指定下载文件路径暂缺
      * todo : 手机浏览器 h5 暂缺
      *
-     * @param browserName       浏览器名
-     * @param terminal          终端 pc/h5
-     * @param deviceName        设备名
-     * @param remoteIP          远端 ip
-     * @param remotePort        端口
-     * @param browserVersion    浏览器版本
+     * @param browserName    浏览器名
+     * @param terminal       终端 pc/h5
+     * @param deviceName     设备名
+     * @param remoteIP       远端 ip
+     * @param remotePort     端口
+     * @param browserVersion 浏览器版本
      * @return WebDriver
+     * @throws Exception 匹配不到 browserName 异常
      */
     @Override
-    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) {
+    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) throws Exception {
         /* 当不是 IE 进入责任链的下一环 */
         if (!browserName.toLowerCase().equals("ie")) {
             return next.startBrowser(browserName, terminal, deviceName, remoteIP, remotePort, browserVersion);

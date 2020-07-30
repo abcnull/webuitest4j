@@ -8,19 +8,20 @@
     <parameter name="param1" value="${param1}"/>
     <parameter name="param2" value="${param2}"/>
 
-    <!-- hub 参数配置 -->
-    <!--<parameter name="remoteIP" value="127.0.0.1"/>-->
-    <!--<parameter name="remotePort" value="4444"/>-->
-    <!--<parameter name="browserVersion" value="79.0.3945.130"/>-->
-
-    <!-- 项目传参 -->
-    <!-- 终端选择 pc 端 -->
+    <!-- pc/h5 的选择示例 -->
+    <!-- 如果终端选择 pc 端配置示例 -->
     <parameter name="terminal" value="pc"/>
     <parameter name="browserName" value="chrome"/>
-    <!--&lt;!&ndash; 终端选择 h5 端 &ndash;&gt;-->
+    <parameter name="deviceName" value="desktop"/>
+    <!-- 如果终端选择 h5 端配置示例 -->
     <!--<parameter name="terminal" value="h5"/>-->
     <!--<parameter name="browserName" value="chrome"/>-->
     <!--<parameter name="deviceName" value="Nexus 5"/>-->
+
+    <!-- 若运行远端，则使用 hub 参数配置示例 -->
+    <!--<parameter name="remoteIP" value="127.0.0.1"/>-->
+    <!--<parameter name="remotePort" value="4444"/>-->
+    <!--<parameter name="browserVersion" value="79.0.3945.130"/>-->
 
     <!-- 测试套件 -->
     <suite-files>
