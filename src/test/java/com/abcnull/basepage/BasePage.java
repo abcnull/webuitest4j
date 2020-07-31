@@ -4,7 +4,6 @@ import com.abcnull.util.RedisUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import redis.clients.jedis.Jedis;
 
 /**
  * 封装各个模块页面都可以使用的操作方法

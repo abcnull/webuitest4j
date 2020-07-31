@@ -190,7 +190,7 @@ public class TestReportListener implements IReporter {
             }
             Map<String, Object> result = new HashMap<>();
             //result.put("testName", name);
-            System.out.println("!@#= 运行时间为" + totalTime + "################");
+            System.out.printf("测试用例运行总时间：%.3f(min)\n", ((double)(totalTime/1000)/60));
             result.put("testName", this.project);
             result.put("testPass", testsPass);
             result.put("testFail", testsFail);

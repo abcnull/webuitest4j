@@ -2,6 +2,7 @@
 .idea/
 logs/
 target/
+allure-results/
 
 # File
 *.iml

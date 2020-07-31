@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 /**
  * 操作 redis 的工具类
@@ -57,12 +58,12 @@ public class RedisUtil {
         try {
             log.info("开始初始化 redis 连接池");
             if (redisPwd.isEmpty()) {
+                // 不管 redis 有无启动，JedisPool 都可以正常运行，都不会进入到 catch 中，但是在 getResource 获取链接时就会出问题
                 jedisPool = new JedisPool(jedisPoolConfig, redisIp, redisPort, TestConstant.THREE_THOUSANG);
             } else {
                 jedisPool = new JedisPool(jedisPoolConfig, redisIp, redisPort, TestConstant.TEN_THOUSANG, redisPwd);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("redis 连接池生成失败！");
         }
         return jedisPool;
@@ -78,19 +79,17 @@ public class RedisUtil {
         if (jedis != null) {
             returnJedis();
         }
-        // 产生新的 jedis
         try {
             jedis = jedisPool.getResource();
+            // 默认过期时间
+            String jedisExpireTimeStr = PropertiesReader.getKey("jedis.expireTime");
+            if (jedisExpireTimeStr != null && !jedisExpireTimeStr.isEmpty()) {
+                jedisExpireTime = Integer.parseInt(jedisExpireTimeStr);
+            }
+            log.info("redis 连接池生成成功并产生一个新的连接");
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("从连接池中生成一个新的连接失败！");
         }
-        // 默认过期时间
-        String jedisExpireTimeStr = PropertiesReader.getKey("jedis.expireTime");
-        if (jedisExpireTimeStr != null && !jedisExpireTimeStr.isEmpty()) {
-            jedisExpireTime = Integer.parseInt(jedisExpireTimeStr);
-        }
-        log.info("redis 连接池生成成功并产生一个新的连接");
         return jedis;
     }
 
@@ -129,9 +128,9 @@ public class RedisUtil {
     /**
      * 设置键值对
      *
-     * @param key       键
-     * @param value     值
-     * @param seconds   过期时间
+     * @param key     键
+     * @param value   值
+     * @param seconds 过期时间
      */
     public void setKey(String key, String value, int seconds) {
         jedis.set(key, value);
@@ -157,7 +156,7 @@ public class RedisUtil {
             jedis.close();
             jedis = null;
             jedisExpireTime = 0;
+            log.info("jedis 已归还！");
         }
-        log.info("jedis 已归还！");
     }
 }

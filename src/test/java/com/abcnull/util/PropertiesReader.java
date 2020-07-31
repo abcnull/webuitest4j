@@ -1,6 +1,5 @@
 package com.abcnull.util;
 
-import com.abcnull.constant.TestConstant;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -24,7 +23,8 @@ public class PropertiesReader {
     /**
      * 私有化构造器，不允许外部构造
      */
-    private PropertiesReader() {}
+    private PropertiesReader() {
+    }
 
     /**
      * 读取 properties 测试项目配置文件
