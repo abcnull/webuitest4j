@@ -30,10 +30,9 @@ public class InternetExplorerDriverHandler extends DriverHandler {
      * @param terminal    终端 pc/h5
      * @param deviceName  设备名
      * @return WebDriver
-     * @throws Exception 匹配不到 browserName 异常
      */
     @Override
-    public WebDriver startBrowser(String browserName, String terminal, String deviceName) throws Exception {
+    public WebDriver startBrowser(String browserName, String terminal, String deviceName) {
         /* 当不是 IE 进入责任链的下一环 */
         if (!browserName.toLowerCase().equals("ie")) {
             return next.startBrowser(browserName, terminal, deviceName);
@@ -74,10 +73,9 @@ public class InternetExplorerDriverHandler extends DriverHandler {
      * @param remotePort     端口
      * @param browserVersion 浏览器版本
      * @return WebDriver
-     * @throws Exception 匹配不到 browserName 异常
      */
     @Override
-    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) throws Exception {
+    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) {
         /* 当不是 IE 进入责任链的下一环 */
         if (!browserName.toLowerCase().equals("ie")) {
             return next.startBrowser(browserName, terminal, deviceName, remoteIP, remotePort, browserVersion);

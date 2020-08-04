@@ -65,7 +65,7 @@ public class BaseDriver {
      * @param browserVersion 浏览器版本
      * @return WebDriver
      */
-    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) throws Exception {
+    public WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) {
         /* 驱动基本信息参数 */
         this.browserName = browserName.toLowerCase();
         /* 终端设备信息参数 */

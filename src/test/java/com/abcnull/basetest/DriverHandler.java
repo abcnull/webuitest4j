@@ -27,9 +27,8 @@ public abstract class DriverHandler {
      * @param remotePort     端口
      * @param browserVersion 浏览器版本
      * @return WebDriver
-     * @throws Exception 匹配不到 browserName 异常
      */
-    public WebDriver start(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) throws Exception {
+    public WebDriver start(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) {
         // 通过 remoteIP 是不是空来判定在本地还是远端运行
         if (remoteIP == null || remoteIP.isEmpty()) {
             // terminal 为 pc 可以允许 deviceName 为空
@@ -46,9 +45,8 @@ public abstract class DriverHandler {
      * @param terminal    终端 pc/h5
      * @param deviceName  设备名
      * @return WebDriver
-     * @throws Exception 匹配不到 browserName 异常
      */
-    public abstract WebDriver startBrowser(String browserName, String terminal, String deviceName) throws Exception;
+    public abstract WebDriver startBrowser(String browserName, String terminal, String deviceName);
 
     /**
      * 运行远端
@@ -60,9 +58,8 @@ public abstract class DriverHandler {
      * @param remotePort     端口
      * @param browserVersion 浏览器版本
      * @return WebDriver
-     * @throws Exception 匹配不到 browserName 异常
      */
-    public abstract WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion) throws Exception;
+    public abstract WebDriver startBrowser(String browserName, String terminal, String deviceName, String remoteIP, int remotePort, String browserVersion);
 
     /**
      * 后继结点赋值

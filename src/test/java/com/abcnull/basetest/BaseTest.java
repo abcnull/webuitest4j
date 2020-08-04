@@ -66,11 +66,10 @@ public class BaseTest {
      * @param remoteIP       远端 ip（远端运行必传）
      * @param remotePort     端口（默认是 4444）
      * @param browserVersion 浏览器版本
-     * @throws Exception 匹配不到 browserName 异常
      */
     @BeforeTest(alwaysRun = true)
     @Parameters({"browserName", "terminal", "deviceName", "remoteIP", "remotePort", "browserVersion"})
-    public void beforeTest(@Optional("chrome") String browserName, @Optional("pc") String terminal, @Optional("desktop") String deviceName, @Optional() String remoteIP, @Optional("4444") int remotePort, @Optional() String browserVersion) throws Exception {
+    public void beforeTest(@Optional("chrome") String browserName, @Optional("pc") String terminal, @Optional("desktop") String deviceName, @Optional() String remoteIP, @Optional("4444") int remotePort, @Optional() String browserVersion) {
         /* redis 新连接获取 */
         redisUtil = new RedisUtil();
         redisUtil.initJedis();
