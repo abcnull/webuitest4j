@@ -26,7 +26,7 @@ java + selenium + testng + maven + PO + multithreaded + slf4j + log4j2 + screens
 
 After pulling out the github project, you can run the local testng.xml or run the pom file. `mvn test` in console is also available. It is best to install the redis service locally
 
-The PO object is split into data, and element location and page operation are placed in three packages.The PO object needs to inherit from PageCommon.After writing the PO object, I wrote the test case directly. The test case would inherit the BaseTest. The test case would call the operation method of the PO to realize the test process. I organized the test cases into testng.xml, which I could use Jenkins to keep building
+The PO object is split into data, and element location and page operation are placed in three packages.The PO object needs to inherit from BasePage.After writing the PO object, I wrote the test case directly. The test case would inherit the BaseTest. The test case would call the operation method of the PO to realize the test process. I organized the test cases into testng.xml, which I could use Jenkins to keep building
 
 # Project Structure
 
@@ -38,7 +38,7 @@ The PO object is split into data, and element location and page operation are pl
 
 - common package
 
-  There are two classes BrowserCommon and PageCommon, BrowserCommon is mainly for the most basic elements and page methods, PageCommon is mainly for different pages similar complex operations to encapsulate
+  There are two classes BaseBrowser and BasePage, BaseBrowser is mainly for the most basic elements and page methods, BasePage is mainly for different pages similar complex operations to encapsulate
 
 - PO object
 

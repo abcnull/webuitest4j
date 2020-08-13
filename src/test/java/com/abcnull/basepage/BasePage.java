@@ -35,8 +35,8 @@ public class BasePage extends BaseBrowser {
     /*============================== 页面可共用的操作 ==============================*/
 
     /**
-     * 很多 WEB 项目采用了一些框架，页面各个模块比较相似，因此这里设立了一个 PageCommon 类型来存放公用的操作方法
-     * PageCommon 与 BrowserCommon 不同的是 PageCommon 存放各模块页面可以公用的操作，BrowserPage 只存放最基本的页面操作
+     * 很多 WEB 项目采用了一些框架，页面各个模块比较相似，因此这里设立了一个 BasePage 类型来存放公用的操作方法
+     * BasePage 与 BaseBrowser 不同的是 BasePage 存放各模块页面可以公用的操作，BaseBrowser 只存放最基本的页面操作
      * <p>
      * function1
      */

@@ -69,7 +69,9 @@ public class BaseTest {
      */
     @BeforeTest(alwaysRun = true)
     @Parameters({"browserName", "terminal", "deviceName", "remoteIP", "remotePort", "browserVersion"})
-    public void beforeTest(@Optional("chrome") String browserName, @Optional("pc") String terminal, @Optional("desktop") String deviceName, @Optional() String remoteIP, @Optional("4444") int remotePort, @Optional() String browserVersion) {
+    public void beforeTest(@Optional("chrome") String browserName, @Optional("pc") String terminal,
+                           @Optional("desktop") String deviceName, @Optional() String remoteIP,
+                           @Optional("4444") int remotePort, @Optional() String browserVersion) {
         /* redis 新连接获取 */
         redisUtil = new RedisUtil();
         redisUtil.initJedis();

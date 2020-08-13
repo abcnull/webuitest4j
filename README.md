@@ -26,7 +26,7 @@ java + selenium + testng + maven + PO + 多线程 + slf4j + log4j + 截图 + ext
 
 将 github 项目拉取到本之后，可以运行本地 testng.xml，或者运行 pom 文件，mvn test 控制台运行也是可行的，本地最好安装一下 redis 服务，没有也可以正常运行，对测试流程和报告产出没有影响，但控制台会显示 redis 连接有问题。
 
-编写时候在关注页面操作，PO 对象拆分成了数据，元素定位和页面操作三个部分放在三个包中，PO 对象需要继承 PageCommon，PO 对象写完之后，直接编写测试用例，测试用例会继承 BaseTest，测试用例调用 PO 的操作方法实现测试流程，将测试用例组织到 testng.xml 中实现，最后可以使用 jenkins 来持续构建
+编写时候在关注页面操作，PO 对象拆分成了数据，元素定位和页面操作三个部分放在三个包中，PO 对象需要继承 BasePage，PO 对象写完之后，直接编写测试用例，测试用例会继承 BaseTest，测试用例调用 PO 的操作方法实现测试流程，将测试用例组织到 testng.xml 中实现，最后可以使用 jenkins 来持续构建
 
 # 关系结构
 
@@ -38,7 +38,7 @@ java + selenium + testng + maven + PO + 多线程 + slf4j + log4j + 截图 + ext
 
 - common 包
 
-  含有 BrowserCommon 和 PageCommon 两个类，BrowserCommon 主要是对最基本的元素和页面方法进行了，PageCommon 主要是对不同页面相似的复杂操作进行封装
+  含有 BaseBrowser 和 BasePage 两个类，BaseBrowser 主要是对最基本的元素和页面方法进行了，BasePage 主要是对不同页面相似的复杂操作进行封装
 
 - PO 对象
 
