@@ -2,6 +2,8 @@
 
 **[English](https://github.com/abcnull/webuitest4j/blob/master/README_en.md) | [博客](https://blog.csdn.net/abcnull/article/details/104119940)**
 
+**注意：此项目在不断的优化和拓展中，因此 readme 没有及时的更新！项目经过实战，此 readme 不是最新的项目样貌，仅仅是初代版的样子！但是此 readme 对于理解框架还是很有帮助的！后面会更新 readme！**
+
 # 简介
 
 该项目是 java 编写的使用 selenium 依赖包的 WebUI 测试项目
