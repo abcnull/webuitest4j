@@ -113,6 +113,7 @@ public class BaseTest {
     public void afterTest() throws InterruptedException {
         // 驱动退出关闭浏览器
         baseDriver.closeBrowser();
+        driver = null;
         // redis 连接回收
         redisUtil.returnJedis();
         // todo : 其他工具的释放操作（看需要）
